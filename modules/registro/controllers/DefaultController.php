@@ -50,7 +50,9 @@ class DefaultController extends \app\controllers\BasicController
 		$dataProviderClone = clone $dataProvider; $dataProviderClone->pagination = false; $allModels = $dataProviderClone->models;
 		$lastAlmacen = '';
 		$seriesCounter = -1;
+		//Iterate over models to construct series array
 		foreach($allModels as $m){
+			//If just changed key, start new arrrays
 			if($lastAlmacen != $m->almacen){
 				$xs[$m->almacen] = 'x'.$m->almacen;
 				$seriesCounter++;
@@ -58,6 +60,7 @@ class DefaultController extends \app\controllers\BasicController
 				$columns[2*$seriesCounter + 1][]=$m->almacen;
 				$lastAlmacen = $m->almacen;
 			}
+			//Append datum
 			$columns[2*$seriesCounter][]=$m->fecha;
 			$columns[2*$seriesCounter + 1][]=$m->precio_unitario;
 		}

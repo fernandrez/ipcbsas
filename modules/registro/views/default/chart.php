@@ -32,6 +32,9 @@ $this->params['breadcrumbs'][] = $this->title;
     			'tick' => [
     				'format' => '%Y-%m-%d',
     			]
+    		],
+    		'y' => [
+    			'min' => 0,
     		]
     	],
     ]
