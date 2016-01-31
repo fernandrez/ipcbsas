@@ -17,6 +17,26 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <h1><?= Html::encode($this->title) ?></h1>
 
+<?php echo \yii2mod\c3\chart\Chart::widget([
+    'options' => [
+		'id' => 'chart'
+    ],
+    'clientOptions' => [
+    	'data' => [
+    		'xs' => $xs,
+    		'columns' => $columns,
+    	],
+    	'axis' => [
+    		'x' => [
+    			'type' => 'timeseries',
+    			'tick' => [
+    				'format' => '%Y-%m-%d',
+    			]
+    		]
+    	],
+    ]
+]); ?>
+
 <div class="registro-index">
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 <?php Pjax::begin(); ?>    <?= GridView::widget([

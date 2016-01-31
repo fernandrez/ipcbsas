@@ -37,24 +37,35 @@ class DefaultController extends \app\controllers\BasicController
     {
     	$reg = $this->findModel($id);
 		$searchModel = new RegistroSearch();
-		//Get paginanted models for grid
-        $dataProvider = $searchModel->search([
+		//Get paginated models for grid ordered by almacen
+        $dataProvider = $searchModel->searchOrderByAlmacen([
         	'RegistroSearch' => [
-	        		'categoria'=>$reg->categoria,
-	        		'elemento'=>$reg->elemento,
-	        		'descripcion'=>$reg->descripcion
-        		]
-        	]);
+        		'categoria'=>$reg->categoria,
+        		'elemento'=>$reg->elemento,
+        		'descripcion'=>$reg->descripcion
+    		]
+    	]);
 		
 		//Get all models for chart (no pagination)
 		$dataProviderClone = clone $dataProvider; $dataProviderClone->pagination = false; $allModels = $dataProviderClone->models;
+		$lastAlmacen = '';
+		$seriesCounter = -1;
 		foreach($allModels as $m){
-			$series[$m->almacen]['x'][]=$m->fecha;
-			$series[$m->almacen]['y'][]=$m->precio_unitario;
+			if($lastAlmacen != $m->almacen){
+				$xs[$m->almacen] = 'x'.$m->almacen;
+				$seriesCounter++;
+				$columns[2*$seriesCounter][]='x'.$m->almacen;
+				$columns[2*$seriesCounter + 1][]=$m->almacen;
+				$lastAlmacen = $m->almacen;
+			}
+			$columns[2*$seriesCounter][]=$m->fecha;
+			$columns[2*$seriesCounter + 1][]=$m->precio_unitario;
 		}
 		
         return $this->render('chart',[
             'reg' => $reg,
+            'xs' => $xs,
+            'columns' => $columns,
             'dataProvider' => $dataProvider,
         ]);
     }
