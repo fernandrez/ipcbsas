@@ -81,4 +81,46 @@ class RegistroSearch extends Registro
 
         return $dataProvider;
     }
+
+    public function searchActive($params)
+    {
+        $query = Registro::find()->active()->orderBy('fecha DESC');
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'fecha' => $this->fecha,
+            'cantidad' => $this->cantidad,
+            'precio' => $this->precio,
+            'precio_unitario' => $this->precio_unitario,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'created_by' => $this->created_by,
+            'updated_by' => $this->updated_by,
+        ]);
+
+        $query->andFilterWhere(['like', 'almacen', $this->almacen])
+            ->andFilterWhere(['like', 'categoria', $this->categoria])
+            ->andFilterWhere(['like', 'elemento', $this->elemento])
+            ->andFilterWhere(['like', 'marca', $this->marca])
+            ->andFilterWhere(['like', 'descripcion', $this->descripcion])
+            ->andFilterWhere(['like', 'unidad', $this->unidad])
+            ->andFilterWhere(['like', 'status', $this->status]);
+
+        return $dataProvider;
+    }
 }

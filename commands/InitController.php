@@ -62,7 +62,8 @@ class InitController extends Controller
         $actions['geo']['region']=['index','ver','editar','crear','borrar','get-regiones-pais'];
         $actions['geo']['ciudad']=['index','ver','editar','crear','borrar','get-ciudades-region'];
         $actions['parametros']['listado']=['index','ver','editar','crear','borrar'];
-        $actions['parametros']['listado']=['index','ver','editar','crear','borrar'];
+        $actions['registro']['default']=['index'];
+		$actions['registro']['crud']=['index','view','update','create','delete'];
         $actions['user']['admin']=['index','create','update','update-profile','info','assignments','confirm','delete','block',];
         
         $modules=array_filter(array_keys($actions),function($v){return $v!='base';});
@@ -179,7 +180,7 @@ class InitController extends Controller
 		
 		$fields=['pais_id', 'region_cd', 'nombre', 'created_by'];
 		$data=[
-			[$this->argentina_id, 'BUE','Buenos Aores',$this->admin_id],
+			[$this->argentina_id, 'BUE','Buenos Aires',$this->admin_id],
 		];
 		
 		echo 'Insertando regiones'.PHP_EOL;
@@ -275,8 +276,8 @@ class InitController extends Controller
 ['Disco Rodriguez Peña','Lacteos','Leche','Serenisima','Entera','2015-12-27',1,'l',10.00,10.00,1,0],
 ['Disco Rodriguez Peña','Lacteos','Yogurt','Serenisima','','2015-12-27',1.3,'kg',30.00,23.08,1,0],
 ['Carrefour Rodriguez Peña','Panaderia','Medialuna','Carrefour','','2015-12-27',0.03,'kg',23.20,773.33,1,0],
-['Disco Rodriguez Peña','Personal','Papel Higienico','Elite','Ultra Doble Hoja','2015-12-27',18,'m2',58.65,3.26,1,0],
-['Disco Rodriguez Peña','Personal','Papel Higienico','Elite','Ultra Doble Hoja','2015-12-27',36,'m2',110.69,3.07,1,0],
+['Disco Rodriguez Peña','Personal','Papel Higienico','Elite','Ultra Doble Hoja x 18','2015-12-27',18,'m2',58.65,3.26,1,0],
+['Disco Rodriguez Peña','Personal','Papel Higienico','Elite','Ultra Doble Hoja x 36','2015-12-27',36,'m2',110.69,3.07,1,0],
 ['Disco Rodriguez Peña','Personal','Shampoo','H&S','Relax','2015-12-27',0.7,'l',117.35,167.64,1,0],
 ['Disco Rodriguez Peña','Personal','Shampoo','Pantene','Hidro-cauterizacion','2015-12-27',0.75,'l',102.00,136.00,1,0],
 ['Carrefour Rodriguez Peña','Personal','Shampoo','Pantene','Hidro-cauterizacion','2015-12-27',0.75,'l',109.00,145.33,1,0],

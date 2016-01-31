@@ -9,11 +9,11 @@ namespace app\modules\registro\models;
  */
 class RegistroQuery extends \yii\db\ActiveQuery
 {
-    /*public function active()
+    public function active()
     {
-        $this->andWhere('[[status]]=1');
+        $this->andWhere(['status' => 'active']);
         return $this;
-    }*/
+    }
 
     /**
      * @inheritdoc

@@ -49,7 +49,7 @@ class Registro extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['almacen', 'categoria', 'elemento', 'fecha', 'cantidad', 'unidad', 'precio', 'precio_unitario'], 'required'],
+            [['almacen', 'categoria', 'elemento', 'fecha', 'cantidad', 'unidad', 'precio'], 'required'],
             [['fecha', 'created_at', 'updated_at'], 'safe'],
             [['cantidad', 'precio', 'precio_unitario'], 'number'],
             [['created_by', 'updated_by'], 'integer'],
@@ -124,4 +124,35 @@ class Registro extends \yii\db\ActiveRecord
     {
         return new RegistroQuery(get_called_class());
     }
+	
+    public function beforeSave($insert)
+	{
+	    if (parent::beforeSave($insert)) {
+	    	if(!$this->precio_unitario){
+	        	$this->precio_unitario = $this->precio / $this->cantidad;
+			}
+			if(!$this->fecha){
+				$this->fecha = date('Y-m-d');
+			}
+			if($insert){
+				$old = Registro::find()->where([
+					'almacen' => $this->almacen,
+					'categoria' => $this->categoria,
+					'elemento' => $this->elemento,
+					'marca' => $this->marca,
+					'descripcion' => $this->descripcion,
+				])
+				->all();
+				if(is_array($old)){
+					foreach($old as $o){
+						$o->status = 'inactive';
+						$o->save();
+					}
+				}
+			}
+	        return true;
+	    } else {
+	        return false;
+	    }
+	}
 }

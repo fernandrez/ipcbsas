@@ -29,7 +29,6 @@ class m160123_230000_reg extends Migration
 			'updated_at' => $this->datetime(),
 			'created_by' => $this->integer()->notNull(),
 			'updated_by' => $this->integer(),
-			'order' => $this->string()->notNull(),
 			'status' => $this->string()->notNull()->defaultValue('active')
         ], $tableOptions);
 
