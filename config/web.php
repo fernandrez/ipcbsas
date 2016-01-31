@@ -58,7 +58,7 @@ $config = [
 	        'rules' => array(
 	                //'<module:\w+>/<controller:\w+>/<id:\d+>' => '<module>/<controller>/ver',
 	                //'<module:\w+>/<controller:\w+>/<action:\w+>/<id:\d+>' => '<module>/<controller>/<action>',
-	                '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
+	                //'<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
 	        ),
         ],/**/
         'authManager' => [

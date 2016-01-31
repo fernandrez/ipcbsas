@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * CrudController implements the CRUD actions for Registro model.
  */
-class CrudController extends \app\contorllers\BasicController
+class CrudController extends \app\controllers\BasicController
 {
     /**
      * @inheritdoc

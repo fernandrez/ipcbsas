@@ -62,7 +62,7 @@ class InitController extends Controller
         $actions['geo']['region']=['index','ver','editar','crear','borrar','get-regiones-pais'];
         $actions['geo']['ciudad']=['index','ver','editar','crear','borrar','get-ciudades-region'];
         $actions['parametros']['listado']=['index','ver','editar','crear','borrar'];
-        $actions['registro']['default']=['index'];
+        $actions['registro']['default']=['index','chart'];
 		$actions['registro']['crud']=['index','view','update','create','delete'];
         $actions['user']['admin']=['index','create','update','update-profile','info','assignments','confirm','delete','block',];
         

@@ -6,6 +6,7 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 use yii\web\View;
 use kartik\date\DatePicker;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\registro\models\RegistroSearch */
@@ -19,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="registro-form">
 	
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['action' => '/registro']); ?>
 	
 	<?php echo $form->errorSummary($new); ?>
     
@@ -31,11 +32,12 @@ $this->params['breadcrumbs'][] = $this->title;
 	    	<?= $form->field($new, 'categoria')->textInput(['maxlength' => true]) ?>
 		</div>
 		<div class="col-sm-3">
-			<div class="form-group field-registro-categoria required has-error">
+			<div class="form-group field-registro-fecha required">
 				<?= '<label>Fecha</label>'; ?>
 	    		<?= DatePicker::widget([
 				    'model' => $new,
 				    'attribute' => 'fecha',
+        			//'type'=> \kartik\date\DatePicker::TYPE_INPUT,
 				    'pluginOptions' => [
 				        'format' => 'yyyy-mm-dd',
 				        'todayHighlight' => true
@@ -90,19 +92,31 @@ $this->params['breadcrumbs'][] = $this->title;
             'categoria',
             'elemento',
             'marca',
-            // 'descripcion',
+            'descripcion',
             'fecha',
             // 'cantidad',
             // 'unidad',
             // 'precio',
-            ['attribute'=>'precio_unitario','label' =>'precio_unitario','value' => function($data){return $data->precio_unitario.' / '.$data->unidad;}],
+            ['attribute'=>'precio_unitario','value' => function($data){return round($data->precio_unitario,2).' / '.$data->unidad;}],
             // 'created_at',
             // 'updated_at',
             // 'created_by',
             // 'updated_by',
             // 'status',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+	            'class' => 'yii\grid\ActionColumn',
+	            'template'=>'{view}',
+				'buttons'=>[
+					'view' => function ($url, $model) {     
+						return Html::a('<span class="glyphicon glyphicon-stats"></span>', Url::toRoute(['/registro/default/chart','id'=>$model->id]), [
+							'title' => Yii::t('yii', 'View'),
+							'data-pjax' => 0,
+				        ]);                                
+				
+				    }
+				]                            
+			],
         ],
         'rowOptions' => function($model, $key, $index, $grid){
         	$opt = [];
