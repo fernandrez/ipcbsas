@@ -49,10 +49,10 @@ $this->params['breadcrumbs'][] = $this->title;
 	
 	<div class="row">
 		<div class="col-sm-3">
-   			<?= $form->field($new, 'elemento')->textInput(['maxlength' => true]) ?>
+    		<?= $form->field($new, 'marca')->textInput(['maxlength' => true]) ?>
 		</div>
 		<div class="col-sm-3">
-    		<?= $form->field($new, 'marca')->textInput(['maxlength' => true]) ?>
+   			<?= $form->field($new, 'elemento')->textInput(['maxlength' => true]) ?>
 		</div>
 		<div class="col-sm-3">
     		<?= $form->field($new, 'descripcion')->textInput(['maxlength' => true]) ?>
