@@ -100,6 +100,6 @@ class RegistroSearch extends Registro
     {
         $query = Registro::find()->orderBy('almacen, fecha desc');
 
-        return $this->search($params, $query);
+        return $this->search($params, $query, false);
     }
 }
