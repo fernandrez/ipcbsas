@@ -141,7 +141,8 @@ class Registro extends \yii\db\ActiveRecord
 					'descripcion' => $this->descripcion,
 				])
 				->all();
-				if(is_array($old)){
+				if(is_array($old) && count($old) > 0){
+					var_dump($old); die;
 					$maxFecha = $old[0]->fecha;
 					foreach($old as $o){
 						if($o->fecha > $maxFecha){
