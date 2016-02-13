@@ -40,7 +40,7 @@ class RegistroSearch extends Registro
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $query = null)
+    public function search($params, $query = null, $like = true)
     {
     	if(is_null($query)){
         	$query = Registro::find();
@@ -77,12 +77,15 @@ class RegistroSearch extends Registro
 
         $query->andFilterWhere(['like', 'almacen', $this->almacen])
             ->andFilterWhere(['like', 'categoria', $this->categoria])
-            ->andFilterWhere(['like', 'elemento', $this->elemento])
             ->andFilterWhere(['like', 'marca', $this->marca])
             ->andFilterWhere(['like', 'descripcion', $this->descripcion])
             ->andFilterWhere(['like', 'unidad', $this->unidad])
             ->andFilterWhere(['like', 'status', $this->status]);
-
+		if($like){
+			$query->andFilterWhere(['like', 'elemento', $this->elemento]);
+		} else {
+			$query->andFilterWhere(['elemento' => $this->elemento]);
+		}
         return $dataProvider;
     }
 
