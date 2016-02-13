@@ -128,9 +128,7 @@ class Registro extends \yii\db\ActiveRecord
     public function beforeSave($insert)
 	{
 	    if (parent::beforeSave($insert)) {
-	    	if(!$this->precio_unitario){
-	        	$this->precio_unitario = $this->precio / $this->cantidad;
-			}
+	    	$this->precio_unitario = $this->precio / $this->cantidad;
 			if(!$this->fecha){
 				$this->fecha = date('Y-m-d');
 			}
@@ -144,9 +142,18 @@ class Registro extends \yii\db\ActiveRecord
 				])
 				->all();
 				if(is_array($old)){
+					$maxFecha = $old[0]->fecha;
 					foreach($old as $o){
-						$o->status = 'inactive';
-						$o->save();
+						if($o->fecha > $maxFecha){
+							$maxFecha = $o->fecha;
+						}
+						if($o->fecha < $this->fecha){
+							$o->status = 'inactive';
+							$o->save();
+						}
+					}
+					if($maxFecha > $this->fecha){
+						$this->status = 'inactive';
 					}
 				}
 			}
