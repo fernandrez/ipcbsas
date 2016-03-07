@@ -237,7 +237,7 @@ class InitController extends Controller
 		echo 'Inicializando tabla de registro'.PHP_EOL;
 		$cn->createCommand('set foreign_key_checks=0;truncate registro;foreign_key_checks=1;')->execute();
 		$fields=['almacen','categoria','elemento','marca','descripcion','fecha','cantidad','unidad','precio','precio_unitario','created_by','order'];
-		$data=[
+		$data=[/*
 ['Disco Rodriguez Peña','Carnes','Pechuga Pollo','','','2015-12-27',1,'kg',85.00,85.00,1,0],
 ['Carrefour Nuñez','Carnes','Chorizo Gancho','','','2016-01-21',1,'kg',75.00,75.00,1,0],
 ['Carrefour Nuñez','Carnes','Muslos Pollo','','','2016-01-21',1,'kg',42.00,42.00,1,0],
@@ -294,7 +294,7 @@ class InitController extends Controller
 ['Carrefour Nuñez','Carnes','Fuet','Tandil','','2016-01-10',0.15,'kg',77,513.33,1,0],
 ['Carrefour Nuñez','Panaderia','Rapiditas','Bimbo','','2016-01-10',0.33,'kg',40,121.21,1,0],
 ['Carrefour Nuñez','Carnes','Mix Pollo','','','2016-01-10',0.57,'kg',83.22,146.00,1,0],
-['Carrefour Nuñez','Carnes','Carne Molida','','','2016-01-10',0.564,'kg',21.57,38.24,1,0],
+['Carrefour Nuñez','Carnes','Carne Molida','','','2016-01-10',0.564,'kg',21.57,38.24,1,0],*/
 		];
 		$this->batchInsert('app\modules\registro\models\Registro',$fields,$data);
 	}

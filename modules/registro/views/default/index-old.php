@@ -7,7 +7,6 @@ use yii\widgets\Pjax;
 use yii\web\View;
 use kartik\date\DatePicker;
 use yii\helpers\Url;
-use kartik\depdrop\DepDrop;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\registro\models\RegistroSearch */
@@ -26,24 +25,11 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php echo $form->errorSummary($new); ?>
     
 	<div class="row">
-        <div class="col-sm-3">
-            <?= $form->field($new, 'cadena_id')->dropDownList($cadenas,['prompt'=>'Selecciona Cadena']) ?>
-        </div>
-        <div class="col-sm-3">
-            <?php //echo $form->field($new, 'almacen_id')->dropDownList($almacenes,['prompt'=>'Selecciona Almacén']) ?>
-            <?php
-            echo $form->field($new, 'almacen_id')->widget(DepDrop::classname(), [
-                'id'=>'registro-almacen_id',
-                'pluginOptions'=>[
-                    'depends'=>['registro-cadena_id'],
-                    'placeholder'=>'Selecciona Almacen...',
-                    'url'=>Url::to(['/registro/almacen/almacenes-cadena'])
-                ]
-            ]);
-            ?>
-        </div>
 		<div class="col-sm-3">
-	    	<?= $form->field($new, 'categoria_id')->dropDownList($categorias,['prompt'=>'Selecciona Categoría']) ?>
+	    	<?= $form->field($new, 'almacen')->textInput(['maxlength' => true]) ?>
+		</div>
+		<div class="col-sm-3">
+	    	<?= $form->field($new, 'categoria')->textInput(['maxlength' => true]) ?>
 		</div>
 		<div class="col-sm-3">
 			<div class="form-group field-registro-fecha required">

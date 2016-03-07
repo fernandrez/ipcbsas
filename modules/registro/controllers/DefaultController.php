@@ -6,6 +6,10 @@ use Yii;
 use yii\web\Controller;
 use app\modules\registro\models\Registro;
 use app\modules\registro\models\RegistroSearch;
+use app\modules\registro\models\Cadena;
+use app\modules\registro\models\Almacen;
+use app\modules\registro\models\Categoria;
+use yii\helpers\ArrayHelper;
 
 /**
  * Default controller for the `registro` module
@@ -26,8 +30,15 @@ class DefaultController extends \app\controllers\BasicController
 			$new->save();	
 		}
 		
+        $cadenas = ArrayHelper::map(Cadena::find()->where(['status'=>'active'])->orderBy('titulo')->all(), 'id', 'titulo');
+        $almacenes = ArrayHelper::map(Almacen::find()->where(['status'=>'active'])->orderBy('identificador')->all(), 'id', 'identificador');
+        $categorias = ArrayHelper::map(Categoria::find()->where(['status'=>'active'])->orderBy('titulo')->all(), 'id', 'titulo');
+        
         return $this->render('index',[
-        	'new' => $new,
+            'new' => $new,
+            'cadenas' => $cadenas,
+            'almacenes' => $almacenes,
+            'categorias' => $categorias,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);

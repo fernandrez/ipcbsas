@@ -33,7 +33,7 @@ class m160123_230000_reg extends Migration
         ], $tableOptions);
 
         $this->addForeignKey('fk_registro_created_by','{{%registro}}','created_by','{{%user}}','id','CASCADE','RESTRICT');
-		$this->addForeignKey('fk_registro_parametro_updated_by','{{%registro}}','updated_by','{{%user}}','id','CASCADE','RESTRICT');
+		$this->addForeignKey('fk_registro_updated_by','{{%registro}}','updated_by','{{%user}}','id','CASCADE','RESTRICT');
     }
 
     public function down()
