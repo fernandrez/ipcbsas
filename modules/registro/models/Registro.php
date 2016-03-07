@@ -4,6 +4,9 @@ namespace app\modules\registro\models;
 
 use Yii;
 use dektrium\user\models\User;
+use app\modules\registro\models\Cadena;
+use app\modules\registro\models\Almacen;
+use app\modules\registro\models\Categoria;
 use app\components\securitybehaviors\StripTagsBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
@@ -49,14 +52,17 @@ class Registro extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['almacen', 'categoria', 'elemento', 'fecha', 'cantidad', 'unidad', 'precio'], 'required'],
+            [['elemento', 'fecha', 'cantidad', 'unidad', 'precio'], 'required'],
             [['fecha', 'created_at', 'updated_at'], 'safe'],
-            [['cantidad', 'precio', 'precio_unitario'], 'number'],
+            [['cadena_id', 'almacen_id', 'categoria_id', 'cantidad', 'precio', 'precio_unitario'], 'number'],
             [['created_by', 'updated_by'], 'integer'],
             [['almacen', 'categoria', 'elemento', 'marca', 'descripcion', 'status'], 'string', 'max' => 255],
             [['unidad'], 'string', 'max' => 25],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
-            [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']]
+            [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
+            [['cadena_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cadena::className(), 'targetAttribute' => ['cadena_id' => 'id']],
+            [['almacen_id'], 'exist', 'skipOnError' => true, 'targetClass' => Almacen::className(), 'targetAttribute' => ['almacen_id' => 'id']],
+            [['categoria_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categoria::className(), 'targetAttribute' => ['categoria_id' => 'id']]
         ];
     }
 	
@@ -117,6 +123,30 @@ class Registro extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCadenaR()
+    {
+        return $this->hasOne(Cadena::className(), ['id' => 'cadena_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAlmacenR()
+    {
+        return $this->hasOne(Almacen::className(), ['id' => 'almacen_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategoriaR()
+    {
+        return $this->hasOne(Categoria::className(), ['id' => 'categoria_id']);
+    }
+
+    /**
      * @inheritdoc
      * @return RegistroQuery the active query used by this AR class.
      */
@@ -156,6 +186,8 @@ class Registro extends \yii\db\ActiveRecord
 						$this->status = 'inactive';
 					}
 				}
+                $this->almacen = $this->cadenaR->titulo.' '.$this->almacenR->identificador;
+                $this->categoria = $this->categoriaR->titulo;
 			}
 	        return true;
 	    } else {
