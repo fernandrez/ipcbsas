@@ -46,6 +46,8 @@ class CategoriaAlmacenInitController extends Controller
             if(count($words) > 1){    
                 $regalmacen = implode(' ', array_slice($words, 1, count($words)-1));
                 $almacen = Almacen::find()->where(['identificador'=>$regalmacen,'cadena_id'=>$cadena->id])->one();
+            } else {
+                $almacen = null;
             }
             if(!$almacen){
                 $almacen = new Almacen;
