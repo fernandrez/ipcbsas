@@ -144,10 +144,35 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php
 	$this->registerJs("$('div.registro-index').on('click', 'tr', function(){
+	    ajaxData = {};
 		for(var p in $(this).data()){
 			if($('#registro-'+p)){
+			    if(p=='cadena_id'){
+			      ajaxData['depdrop_parents'] = $(this).data()[p];
+			    } 
+			    $('#registro-'+p).data('actval',$(this).data()[p]);
 				$('#registro-'+p).val($(this).data()[p]);
 			}
 		}
+        $.ajax({
+            url: '".Url::to(['/registro/almacen/almacenes-cadena'])."',
+            method: 'POST',
+            beforeSend: function(){ $('#registro-almacen_id').html(''); },
+            data: ajaxData, 
+            error: function(a,b,c){alert(b+c);},
+            success: function(data){
+                var data = JSON.parse(data);
+                $('#registro-almacen_id').html('');
+                $('#registro-almacen_id').append('<option value>Selecciona Almacen..</option>');
+                for(opt in data.output){
+                    $('#registro-almacen_id').removeAttr('disabled');
+                    if($('#registro-almacen_id').data('actval')==data.output[opt].id){
+                        $('#registro-almacen_id').append('<option selected=\"selected\" value=\"'+data.output[opt].id+'\">'+data.output[opt].name+'</option>');
+                    } else {
+                        $('#registro-almacen_id').append('<option value=\"'+data.output[opt].id+'\">'+data.output[opt].name+'</option>');
+                    }
+                }
+            }
+        });
 	});", View::POS_END, 'pre-fill');
 ?>
