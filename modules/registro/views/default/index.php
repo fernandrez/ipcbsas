@@ -143,7 +143,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php Pjax::end(); ?></div>
 
 <?php
-	$this->registerJs("$('div.registro-index').on('click', 'tr', function(){
+	$this->registerJs("$('div.registro-index').on('click', 'tbody tr', function(){
 	    ajaxData = {};
 		for(var p in $(this).data()){
 			if($('#registro-'+p)){
