@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $model app\modules\registro\models\Almacen */
 
 $this->title = Yii::t('app', 'Create Almacen');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Almacens'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Almacenes'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="almacen-create">
@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'cadenas' => $cadenas,
     ]) ?>
 
 </div>

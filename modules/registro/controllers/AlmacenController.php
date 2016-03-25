@@ -3,12 +3,14 @@
 namespace app\modules\registro\controllers;
 
 use Yii;
+use app\modules\registro\models\Cadena;
 use app\modules\registro\models\Almacen;
 use app\modules\registro\models\AlmacenSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;
+use yii\helpers\ArrayHelper;
 
 /**
  * AlmacenController implements the CRUD actions for Almacen model.
@@ -62,12 +64,15 @@ class AlmacenController extends Controller
     public function actionCreate()
     {
         $model = new Almacen();
-
+        $cadenas = Cadena::find()->where('status = "active"')->orderBy('titulo')->all();
+        $cadenas = ArrayHelper::map($cadenas, 'id', 'titulo');
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'cadenas' => $cadenas,
             ]);
         }
     }

@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * CadenaController implements the CRUD actions for Cadena model.
  */
-class CadenaController extends Controller
+class CadenaController extends \app\controllers\BasicController
 {
     public function behaviors()
     {

@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\modules\registro\models\AlmacenSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Almacens');
+$this->title = Yii::t('app', 'Almacenes');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="almacen-index">

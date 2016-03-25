@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\modules\registro\models\Almacen */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Almacens'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Almacenes'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="almacen-view">

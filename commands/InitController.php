@@ -44,7 +44,8 @@ class InitController extends Controller
 		$this->cn->createCommand('set foreign_key_checks=0;truncate user;foreign_key_checks=1;')->execute();
 		
 		echo 'Registrando administrador'.PHP_EOL;
-		$fernandrez= $this->createUser('fernandrez@gmail.com','fernandrez','fernandrez2015');
+        $fernandrez= $this->createUser('fernandrez@gmail.com','fernandrez','fernandrez2015');
+        $diana= $this->createUser('pelaezdiana@hotmail.com','pelval','pelval2016');
 				
 		echo 'Inicializando tablas de autenticacion'.PHP_EOL;
 		$this->cn->createCommand('set foreign_key_checks=0;truncate auth_item_child;
@@ -63,7 +64,10 @@ class InitController extends Controller
         $actions['geo']['ciudad']=['index','ver','editar','crear','borrar','get-ciudades-region'];
         $actions['parametros']['listado']=['index','ver','editar','crear','borrar'];
         $actions['registro']['default']=['index','chart'];
-		$actions['registro']['crud']=['index','view','update','create','delete'];
+        $actions['registro']['crud']=['index','view','update','create','delete'];
+        $actions['registro']['categoria']=['index','view','update','create','delete'];
+        $actions['registro']['cadena']=['index','view','update','create','delete'];
+        $actions['registro']['almacen']=['index','view','update','create','delete'];
         $actions['user']['admin']=['index','create','update','update-profile','info','assignments','confirm','delete','block',];
         
         $modules=array_filter(array_keys($actions),function($v){return $v!='base';});
@@ -135,6 +139,7 @@ class InitController extends Controller
 		echo 'Asignando roles a usuarios'.PHP_EOL;
 		//Admin
         $auth->assign($adminRole, $fernandrez->id);$this->admin_id=$fernandrez->id;
+        $auth->assign($adminRole, $diana->id);
     }
 
 	public function actionAppPars(){
