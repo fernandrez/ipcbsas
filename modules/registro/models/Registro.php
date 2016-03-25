@@ -52,7 +52,7 @@ class Registro extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['elemento', 'fecha', 'cantidad', 'unidad', 'precio', 'cadena_id', 'almacen_id'], 'required'],
+            [['elemento', 'fecha', 'cantidad', 'unidad', 'precio', 'categoria_id', 'cadena_id', 'almacen_id'], 'required'],
             [['fecha', 'created_at', 'updated_at'], 'safe'],
             [['cadena_id', 'almacen_id', 'categoria_id', 'cantidad', 'precio', 'precio_unitario'], 'number'],
             [['created_by', 'updated_by'], 'integer'],
