@@ -143,6 +143,34 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php Pjax::end(); ?></div>
 
 <?php
+if($new->cadena_id != ''){
+    $this->registerJs(
+        "var ajaxData = {}; ajaxData['depdrop_parents'] = ".$new->cadena_id.";
+        $.ajax({
+            url: '".Url::to(['/registro/almacen/almacenes-cadena'])."',
+            method: 'POST',
+            beforeSend: function(){ $('#registro-almacen_id').html(''); },
+            data: ajaxData, 
+            error: function(a,b,c){alert(b+c);},
+            success: function(data){
+                var data = JSON.parse(data);
+                $('#registro-almacen_id').html('');
+                $('#registro-almacen_id').append('<option value>Selecciona Almacen..</option>');
+                for(opt in data.output){
+                    $('#registro-almacen_id').removeAttr('disabled');
+                    if(data.output[opt].id == ".$new->almacen_id."){
+                        $('#registro-almacen_id').append('<option selected=\"selected\" value=\"'+data.output[opt].id+'\">'+data.output[opt].name+'</option>');
+                    } else {
+                        $('#registro-almacen_id').append('<option value=\"'+data.output[opt].id+'\">'+data.output[opt].name+'</option>');
+                    }
+                }
+            }
+        })" 
+    );
+}
+?>
+
+<?php
 	$this->registerJs("$('div.registro-index').on('click', 'tbody tr', function(){
 	    ajaxData = {};
 		for(var p in $(this).data()){
