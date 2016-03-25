@@ -86,12 +86,15 @@ class AlmacenController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $cadenas = Cadena::find()->where('status = "active"')->orderBy('titulo')->all();
+        $cadenas = ArrayHelper::map($cadenas, 'id', 'titulo');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'cadenas' => $cadenas,
             ]);
         }
     }
