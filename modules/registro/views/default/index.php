@@ -120,15 +120,22 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
 	            'class' => 'yii\grid\ActionColumn',
-	            'template'=>'{view}',
+	            'template'=>'{graph} {update}',
 				'buttons'=>[
-					'view' => function ($url, $model) {     
-						return Html::a('<span class="glyphicon glyphicon-stats"></span>', Url::toRoute(['/registro/default/chart','id'=>$model->id]), [
-							'title' => Yii::t('yii', 'View'),
-							'data-pjax' => 0,
-				        ]);                                
-				
-				    }
+                    'graph' => function ($url, $model) {     
+                        return Html::a('<span class="glyphicon glyphicon-stats"></span>', Url::toRoute(['/registro/default/chart','id'=>$model->id]), [
+                            'title' => Yii::t('yii', 'Graph'),
+                            'data-pjax' => 0,
+                        ]);                                
+                
+                    },
+                    'update' => function ($url, $model) {     
+                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Url::toRoute(['/registro/crud/update','id'=>$model->id]), [
+                            'title' => Yii::t('yii', 'Graph'),
+                            'data-pjax' => 0,
+                        ]);                                
+                
+                    }
 				]                            
 			],
         ],
