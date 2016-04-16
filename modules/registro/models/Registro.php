@@ -171,9 +171,11 @@ class Registro extends \yii\db\ActiveRecord
     				'marca' => $this->marca,
     				'descripcion' => $this->descripcion,
     				'status' => 'active',
-    			])
-                //->andWhere(['<>','id',$this->id])
-    			->all();
+    			]);
+                if(isset($this->id)){
+                    $old = $old->andWhere(['<>','id',$this->id]);    
+                }
+    			$old = $old->all();
                 //echo '<pre>';var_dump($old);die;
     			if(is_array($old) && count($old) > 0){
     				$maxFecha = $old[0]->fecha;
