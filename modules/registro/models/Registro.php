@@ -38,6 +38,7 @@ use yii\db\Expression;
  */
 class Registro extends \yii\db\ActiveRecord
 {
+    public $triggered = false;
     /**
      * @inheritdoc
      */
@@ -162,30 +163,34 @@ class Registro extends \yii\db\ActiveRecord
 			if(!$this->fecha){
 				$this->fecha = date('Y-m-d');
 			}
-			if($insert){
-				$old = Registro::find()->where([
-					'almacen_id' => $this->almacen_id,
-					'categoria_id' => $this->categoria_id,
-					'elemento' => $this->elemento,
-					'marca' => $this->marca,
-					'descripcion' => $this->descripcion,
-				])
-				->all();
-				if(is_array($old) && count($old) > 0){
-					$maxFecha = $old[0]->fecha;
-					foreach($old as $o){
-						if($o->fecha > $maxFecha){
-							$maxFecha = $o->fecha;
-						}
-						if($o->fecha < $this->fecha){
-							$o->status = 'inactive';
-							$o->save();
-						}
-					}
-					if($maxFecha > $this->fecha){
-						$this->status = 'inactive';
-					}
-				}
+			if(!$this->triggered){
+    			$old = Registro::find()->where([
+    				'almacen_id' => $this->almacen_id,
+    				'categoria_id' => $this->categoria_id,
+    				'elemento' => $this->elemento,
+    				'marca' => $this->marca,
+    				'descripcion' => $this->descripcion,
+    				'status' => 'active',
+    			])
+                //->andWhere(['<>','id',$this->id])
+    			->all();
+                //echo '<pre>';var_dump($old);die;
+    			if(is_array($old) && count($old) > 0){
+    				$maxFecha = $old[0]->fecha;
+    				foreach($old as $o){
+    					if($o->fecha > $maxFecha){
+    						$maxFecha = $o->fecha;
+    					}
+    					if($o->fecha <= $this->fecha){
+    						$o->status = 'inactive';
+                            $o->triggered = true;
+    						$o->save();
+    					}
+    				}
+    				if($maxFecha > $this->fecha){
+    					$this->status = 'inactive';
+    				}
+    			}
                 $this->almacen = $this->cadenaR->titulo.' '.$this->almacenR->identificador;
                 $this->categoria = $this->categoriaR->titulo;
 			}
