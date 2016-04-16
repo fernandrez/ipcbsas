@@ -164,8 +164,8 @@ class Registro extends \yii\db\ActiveRecord
 			}
 			if($insert){
 				$old = Registro::find()->where([
-					'almacen' => $this->almacen,
-					'categoria' => $this->categoria,
+					'almacen_id' => $this->almacen_id,
+					'categoria_id' => $this->categoria_id,
 					'elemento' => $this->elemento,
 					'marca' => $this->marca,
 					'descripcion' => $this->descripcion,

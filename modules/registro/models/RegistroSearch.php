@@ -50,7 +50,7 @@ class RegistroSearch extends Registro
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
 		    'pagination' => [
-		        'pageSize' => 10,
+		        'pageSize' => 25,
 		    ],
         ]);
 
@@ -91,7 +91,11 @@ class RegistroSearch extends Registro
 
     public function searchActive($params)
     {
-        $query = Registro::find()->active()->orderBy('fecha DESC, precio_unitario');
+        $query = Registro::find()->active();
+        
+        if(!isset($params['sort'])){
+            $query = $query->orderBy('fecha DESC, precio_unitario');
+        }
 
         return $this->search($params, $query);
     }
