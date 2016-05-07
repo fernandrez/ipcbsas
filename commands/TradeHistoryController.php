@@ -45,6 +45,7 @@ class TradeHistoryController extends Controller
             }
             $response = json_decode($curl->get('https://cex.io/api/trade_history/BTC/USD/?since='.$since),true);
             $index = count($response);
+            echo 'Since:'.$since.', Res:'.$response[999]['tid'].'\r\n';
             if($response[999]['tid'] < $since){
                 $index = 999 - ($since - $response[999]['tid']);
             }
@@ -58,7 +59,10 @@ class TradeHistoryController extends Controller
                 $tradeModel->tid = $trade['tid'];
                 if($tradeModel->save() && $tradeModel->tid > $lastSaved){
                     $lastSaved = $tradeModel->tid;
+                } else {
+                    var_dump($tradeModel->errors);
                 }
+                unset($tradeModel);
             }
         }while($lastSaved < $lastCex);
     }
