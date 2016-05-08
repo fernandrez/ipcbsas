@@ -40,7 +40,7 @@ class Trades extends \yii\db\ActiveRecord
             [['type', 'date', 'amount', 'price', 'tid'], 'required'],
             [['date', 'tid'], 'integer'],
             [['amount', 'price'], 'number'],
-            [['tid'], 'unique'],
+            //[['tid'], 'unique'],
             [['created_at'], 'safe'],
             [['type'], 'string', 'max' => 255]
         ];
