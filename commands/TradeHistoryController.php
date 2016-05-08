@@ -54,6 +54,7 @@ class TradeHistoryController extends Controller
                     $index = 999 - ($since - $response[999]['tid']);
                 } else {
                     $since += $since - $response[999]['tid'];
+                    $response = json_decode($curl->get('https://cex.io/api/trade_history/BTC/USD/?since='.$since),true);
                 }
             }
             while($index){
