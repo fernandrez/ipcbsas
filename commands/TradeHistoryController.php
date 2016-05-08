@@ -50,7 +50,11 @@ class TradeHistoryController extends Controller
             $index = count($response);
             echo 'Since:'.$since.', Res:'.$response[999]['tid'].'\r\n'  ;
             if($response[999]['tid'] < $since){
-                $index = 999 - ($since - $response[999]['tid']);
+                if($since - $response[999]['tid'] < 1000){
+                    $index = 999 - ($since - $response[999]['tid']);
+                } else {
+                    $since += $since - $response[999]['tid'];
+                }
             }
             while($index){
                 $trade = $response[--$index];
