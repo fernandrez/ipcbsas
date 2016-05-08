@@ -10,6 +10,7 @@ namespace app\commands;
 use yii\console\Controller;
 use linslin\yii2\curl;
 use app\models\Trades;
+use yii\db\Query;
 
 /**
  * This command echoes the first argument that you have entered.
@@ -34,9 +35,11 @@ class TradeHistoryController extends Controller
         $lastSaved = -1;
         do{
             if($lastSaved == -1){
-                $lastModel = Trades::find()->orderBy('tid DESC')->one();
-                if($lastModel){
-                    $since = $last->tid + 1;
+                $lastTid = new Query;
+                $lastTid = $lastTid->select('max(tid) as tid')->from('trades')->one();
+                $lastTid = $lastTid['tid'];
+                if(!is_null($lastTid)){
+                    $since = $lastTid + 1;
                 } else {
                     $since = 1;
                 }
