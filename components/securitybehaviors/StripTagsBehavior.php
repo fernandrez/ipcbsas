@@ -18,7 +18,7 @@ class StripTagsBehavior extends Behavior
 	
 	public function stripTags(){
 		foreach($this->owner->attributes as $attribute=>$value){
-			if(!is_null($this->owner->{$attribute}) && $attribute!='path_icono'){
+			if(!is_null($this->owner->{$attribute}) && $attribute!='path_icono' && $attribute!='tick'){
 				$this->owner->{$attribute}=str_replace('\\', '',
 											str_replace('/', '',
 											str_replace('http:', '',

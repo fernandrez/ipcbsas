@@ -21,22 +21,26 @@ use app\models\Orderbook;
  */
 class OrderbookController extends Controller
 {
+    private static $ticks = ['ETH/BTC','BTC/USD',];
     /**
      * This command echoes what you have entered as the message.
      * @param string $message the message to be echoed.
      */
     public function actionIndex()
     {
-        $curl = new curl\Curl();
- 
-        //get http://example.com/
-        $response = json_decode($curl->get('https://cex.io/api/order_book/BTC/USD/?depth=10'),true);
-        $orderbook = new Orderbook;
-        $orderbook->id = $response['id'];
-        $orderbook->timestamp = $response['timestamp'];
-        $orderbook->bids = json_encode($response['bids']);
-        $orderbook->asks = json_encode($response['asks']);
-        $orderbook->pair = $response['pair'];
-        $orderbook->save(); var_dump($orderbook->errors);
+        foreach(self::$ticks as $tick){
+            $curl = new curl\Curl();
+            
+            //get http://example.com/
+            $response = json_decode($curl->get('https://cex.io/api/order_book/'.$tick.'/?depth=10'),true);
+            $orderbook = new Orderbook;
+            $orderbook->id = $response['id'];
+            $orderbook->tick = $tick;
+            $orderbook->timestamp = $response['timestamp'];
+            $orderbook->bids = json_encode($response['bids']);
+            $orderbook->asks = json_encode($response['asks']);
+            $orderbook->pair = $response['pair'];
+            $orderbook->save();
+        }
     }
 }
