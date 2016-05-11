@@ -34,7 +34,7 @@ class OrderbookController extends Controller
             //get http://example.com/
             $response = json_decode($curl->get('https://cex.io/api/order_book/'.$tick.'/?depth=10'),true);
             $orderbook = new Orderbook;
-            $orderbook->id = $response['id'];
+            $orderbook->oid = $response['id'];
             $orderbook->tick = $tick;
             $orderbook->timestamp = $response['timestamp'];
             $orderbook->bids = json_encode($response['bids']);
