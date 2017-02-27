@@ -106,7 +106,7 @@ class Cadena extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'updated_by']);
     }
     
-    public function afterSave(){
+    public function afterSave($insert, $changedAttributes){
         $registros = Registro::find()->where(['cadena_id'=>$this->id])->all();
         foreach($registros as $r){
             $r->almacen = $this->titulo.' '.$r->almacenR->identificador;

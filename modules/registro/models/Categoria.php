@@ -96,7 +96,7 @@ class Categoria extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'updated_by']);
     }
     
-    public function afterSave(){
+    public function afterSave($insert, $changedAttributes){
         $registros = Registro::find()->where(['categoria_id'=>$this->id])->all();
         foreach($registros as $r){
             $r->categoria = $this->titulo;

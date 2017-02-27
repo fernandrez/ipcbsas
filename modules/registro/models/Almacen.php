@@ -110,7 +110,7 @@ class Almacen extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'updated_by']);
     }
     
-    public function afterSave(){
+    public function afterSave($insert, $changedAttributes){
         $registros = Registro::find()->where(['almacen_id'=>$this->id])->all();
         foreach($registros as $r){
             $r->almacen = $r->cadenaR->titulo.' '.$this->identificador;
