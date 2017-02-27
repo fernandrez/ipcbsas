@@ -62,7 +62,7 @@ $config = [
 	        ),
         ],/**/
         'authManager' => [
-			'class' => 'yii\rbac\DbManager',
+			'class' => '\dektrium\rbac\components\DbManager',
 		],
     ],
     'modules' => [
@@ -75,7 +75,7 @@ $config = [
             ],
 	    ],
 	    'rbac' => [
-	        'class' => 'dektrium\rbac\Module',
+	        'class' => 'dektrium\rbac\RbacWebModule',
 	    ],
 	    'geo' => [
             'class' => 'app\modules\geo\Module',
