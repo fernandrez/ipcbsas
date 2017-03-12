@@ -20,11 +20,11 @@ $this->params['breadcrumbs'][] = $this->title;
 <h1><?= Html::encode($this->title) ?></h1>
 
 <div class="registro-form">
-	
+
     <?php $form = ActiveForm::begin(['action' => '/registro']); ?>
-	
+
 	<?php echo $form->errorSummary($new); ?>
-    
+
 	<div class="row">
         <div class="col-sm-3">
             <?= $form->field($new, 'cadena_id')->dropDownList($cadenas,['prompt'=>'Selecciona Cadena']) ?>
@@ -60,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="row">
 		<div class="col-sm-3">
     		<?= $form->field($new, 'marca')->textInput(['maxlength' => true]) ?>
@@ -72,9 +72,9 @@ $this->params['breadcrumbs'][] = $this->title;
     		<?= $form->field($new, 'descripcion')->textInput(['maxlength' => true]) ?>
 		</div>
 	</div>
-	
+
 	<div class="row">
-		<div class="col-sm-3">	
+		<div class="col-sm-3">
     		<?= $form->field($new, 'cantidad')->textInput() ?>
 		</div>
 		<div class="col-sm-3">
@@ -122,21 +122,21 @@ $this->params['breadcrumbs'][] = $this->title;
 	            'class' => 'yii\grid\ActionColumn',
 	            'template'=>'{graph} {update}',
 				'buttons'=>[
-                    'graph' => function ($url, $model) {     
+                    'graph' => function ($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-stats"></span>', Url::toRoute(['/registro/default/chart','id'=>$model->id]), [
                             'title' => Yii::t('yii', 'Graph'),
                             'data-pjax' => 0,
-                        ]);                                
-                
+                        ]);
+
                     },
-                    'update' => function ($url, $model) {     
+                    'update' => function ($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Url::toRoute(['/registro/crud/update','id'=>$model->id]), [
                             'title' => Yii::t('yii', 'Graph'),
                             'data-pjax' => 0,
-                        ]);                                
-                
+                        ]);
+
                     }
-				]                            
+				]
 			],
         ],
         'rowOptions' => function($model, $key, $index, $grid){
@@ -152,12 +152,14 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php
 if($new->cadena_id != ''){
     $this->registerJs(
-        "var ajaxData = {}; ajaxData['depdrop_parents'] = ".$new->cadena_id.";
+        "var ajaxData = {};
+					ajaxData['depdrop_parents'][0] = ".$new->cadena_id.";
+					ajaxData['depdrop_all_params']['registro-cadena_id'] = ajaxData['depdrop_parents'][0];
         $.ajax({
             url: '".Url::to(['/registro/almacen/almacenes-cadena'])."',
             method: 'POST',
             beforeSend: function(){ $('#registro-almacen_id').html(''); },
-            data: ajaxData, 
+            data: ajaxData,
             error: function(a,b,c){alert(b+c);},
             success: function(data){
                 var data = JSON.parse(data);
@@ -172,7 +174,7 @@ if($new->cadena_id != ''){
                     }
                 }
             }
-        })" 
+        })"
     );
 }
 ?>
@@ -183,8 +185,9 @@ if($new->cadena_id != ''){
 		for(var p in $(this).data()){
 			if($('#registro-'+p)){
 			    if(p=='cadena_id'){
-			      ajaxData['depdrop_parents'] = $(this).data()[p];
-			    } 
+			      ajaxData['depdrop_parents'][0] = $(this).data()[p];
+						ajaxData['depdrop_all_params']['registro-cadena_id'] = $(this).data()[p];
+			    }
 			    $('#registro-'+p).data('actval',$(this).data()[p]);
 				$('#registro-'+p).val($(this).data()[p]);
 			}
@@ -193,7 +196,7 @@ if($new->cadena_id != ''){
             url: '".Url::to(['/registro/almacen/almacenes-cadena'])."',
             method: 'POST',
             beforeSend: function(){ $('#registro-almacen_id').html(''); },
-            data: ajaxData, 
+            data: ajaxData,
             error: function(a,b,c){alert(b+c);},
             success: function(data){
                 var data = JSON.parse(data);
