@@ -153,7 +153,8 @@ $this->params['breadcrumbs'][] = $this->title;
 if($new->cadena_id != ''){
     $this->registerJs(
         "var ajaxData = {};
-					ajaxData['depdrop_parents'][0] = ".$new->cadena_id.";
+					ajaxData['depdrop_parents']=[".$new->cadena_id."];
+					ajaxData['depdrop_all_params']=[];
 					ajaxData['depdrop_all_params']['registro-cadena_id'] = ajaxData['depdrop_parents'][0];
         $.ajax({
             url: '".Url::to(['/registro/almacen/almacenes-cadena'])."',
@@ -185,7 +186,8 @@ if($new->cadena_id != ''){
 		for(var p in $(this).data()){
 			if($('#registro-'+p)){
 			    if(p=='cadena_id'){
-			      ajaxData['depdrop_parents'][0] = $(this).data()[p];
+			      ajaxData['depdrop_parents']=[$(this).data()[p]];
+						ajaxData['depdrop_all_params']=[];
 						ajaxData['depdrop_all_params']['registro-cadena_id'] = $(this).data()[p];
 			    }
 			    $('#registro-'+p).data('actval',$(this).data()[p]);
