@@ -19,7 +19,7 @@ class InitController extends Controller
 	public $cn;
 	public $admin_id=1;
 	public $argentina_id=1, $buenos_aires=1, $capital=1;
-	
+
 	public function actionFull(){
 		$this->cn=\Yii::$app->db;
 		$this->actionUsersRbac();
@@ -28,25 +28,25 @@ class InitController extends Controller
 		$this->actionAppPars();
 		$this->actionRegs();
 	}
-	
+
 	public function actionFullDummy(){
 		$this->actionFull();
 	}
-	
+
 	public function actionUsersRbac(){
     	$this->cn=\Yii::$app->db;
-		
+
 		echo 'Inicializando tablas de usuarios'.PHP_EOL;
 		$this->cn->createCommand('set foreign_key_checks=0;
 			truncate token;truncate social_account;foreign_key_checks=1;')->execute();
 		$this->cn->createCommand('set foreign_key_checks=0;truncate social_account;foreign_key_checks=1;')->execute();
 		$this->cn->createCommand('set foreign_key_checks=0;truncate profile;foreign_key_checks=1;')->execute();
 		$this->cn->createCommand('set foreign_key_checks=0;truncate user;foreign_key_checks=1;')->execute();
-		
+
 		echo 'Registrando administrador'.PHP_EOL;
         $fernandrez= $this->createUser('fernandrez@gmail.com','fernandrez','fernandrez2015');
         $diana= $this->createUser('pelaezdiana@hotmail.com','pelval','pelval2016');
-				
+
 		echo 'Inicializando tablas de autenticacion'.PHP_EOL;
 		$this->cn->createCommand('set foreign_key_checks=0;truncate auth_item_child;
 			truncate auth_assignment;
@@ -54,7 +54,7 @@ class InitController extends Controller
 			truncate auth_rule;
 			foreign_key_checks=1;')->execute();
         $auth = Yii::$app->authManager;
-		
+
 		echo 'Creando permisos'.PHP_EOL;
         //Controladores y sus acciones
 		$actions['base']=[];
@@ -68,10 +68,11 @@ class InitController extends Controller
         $actions['registro']['categoria']=['index','view','update','create','delete'];
         $actions['registro']['cadena']=['index','view','update','create','delete'];
         $actions['registro']['almacen']=['index','view','update','create','delete'];
+        $actions['registro']['import']=['index'];
         $actions['user']['admin']=['index','create','update','update-profile','info','assignments','confirm','delete','block',];
-        
+
         $modules=array_filter(array_keys($actions),function($v){return $v!='base';});
-		
+
 		foreach($modules as $m){
 			$controllers=array_keys($actions[$m]);
 			foreach($controllers as $i=>$c){
@@ -115,18 +116,18 @@ class InitController extends Controller
 						$auth->addChild($permissions[$m][$c][$fcp],$permissions[$m][$c][$a]);
 					}
 				}
-			}		
+			}
 		}
 
 		echo 'Creando roles'.PHP_EOL;
         $adminRole = $auth->createRole('admin');
         $auth->add($adminRole);
-		
+
 		echo 'Asignando permisos a rol admin'.PHP_EOL;
         foreach($permissions as $m=>$permission){
         	foreach($permission as $c=>$p){
         		if(!is_array($p)){
-        			if($c==0){		
+        			if($c==0){
         				$auth->addChild($adminRole, $permission[$fcp]);
 						break;
 					}
@@ -135,7 +136,7 @@ class InitController extends Controller
         		}
 			}
 		}
-		
+
 		echo 'Asignando roles a usuarios'.PHP_EOL;
 		//Admin
         $auth->assign($adminRole, $fernandrez->id);$this->admin_id=$fernandrez->id;
@@ -144,18 +145,18 @@ class InitController extends Controller
 
 	public function actionAppPars(){
     	$this->cn=\Yii::$app->db;
-		
+
 		echo 'Inicializando tabla de parametros de aplicacion'.PHP_EOL;
 		$this->cn->createCommand('set foreign_key_checks=0;truncate parametro;foreign_key_checks=1;')->execute();
 		$fields=['nombre', 'valor', 'fecha_inicio', 'created_by'];
-		
+
 		$data=[
 		];
 		$this->batchInsert('app\modules\parametros\models\Parametro',$fields,$data);
 	}
 
 	private function createUser($email,$username,$password){
-		
+
 		$user= new ConsoleUser(['scenario'=>'register']);
 		$user->setAttributes([
             'email'    => $email,
@@ -164,48 +165,48 @@ class InitController extends Controller
             'confirmed_at' => time(),
         ]);
 		$user->register();
-		
+
 		return $user;
 	}
 
 	public function actionGeo(){
     	$this->cn=\Yii::$app->db;
-		
+
 		echo 'Inicializando tablas de geografia'.PHP_EOL;
 		$this->cn->createCommand('set foreign_key_checks=0;truncate direccion;truncate ciudad;truncate region;truncate pais;foreign_key_checks=1;')->execute();
 		$fields=['pais_cd', 'nombre', 'created_by'];
 		$data=[
 			['AR','Argentina',$this->admin_id],
 		];
-		
+
 		echo 'Insertando paises'.PHP_EOL;
 		$ids_paises=$this->batchInsert('app\modules\geo\models\Pais',$fields,$data);
-		
+
 		$this->argentina_id=$ids_paises[0];
-		
+
 		$fields=['pais_id', 'region_cd', 'nombre', 'created_by'];
 		$data=[
 			[$this->argentina_id, 'BUE','Buenos Aires',$this->admin_id],
 		];
-		
+
 		echo 'Insertando regiones'.PHP_EOL;
 		$ids_regiones=$this->batchInsert('app\modules\geo\models\Region',$fields,$data);
-		
-		
+
+
 		$this->buenos_aires=$ids_regiones[0];
-		
+
 		$fields=['pais_id', 'region_id', 'nombre', 'created_by'];
 		$data=[
 			[$this->argentina_id, $this->buenos_aires,'Capital',$this->admin_id],
 		];
-		
+
 		echo 'Insertando ciudades'.PHP_EOL;
 		$ids_ciudades=$this->batchInsert('app\modules\geo\models\Ciudad',$fields,$data);
-		
+
 		$this->capital=$ids_ciudades[0];
 		/*
 		echo 'Insertando direcciones'.PHP_EOL;
-		
+
 		$fieldsDir=['via_id', 'numero_via', 'numero_cruce', 'numero_entrada', 'comentario', 'created_by'];
 		$dataDir=[
 		];
@@ -214,7 +215,7 @@ class InitController extends Controller
 
 	public function actionDirPars(){
     	$cn=\Yii::$app->db;
-		
+
 		echo 'Inicializando tabla de parametros de direccion'.PHP_EOL;
 		$cn->createCommand('set foreign_key_checks=0;truncate direccion_parametro;foreign_key_checks=1;')->execute();
 		$fields=['tipo', 'codigo', 'titulo', 'descripcion', 'created_by'];
@@ -238,7 +239,7 @@ class InitController extends Controller
 
 	public function actionRegs(){
     	$cn=\Yii::$app->db;
-		
+
 		echo 'Inicializando tabla de registro'.PHP_EOL;
 		$cn->createCommand('set foreign_key_checks=0;truncate registro;foreign_key_checks=1;')->execute();
 		$fields=['almacen','categoria','elemento','marca','descripcion','fecha','cantidad','unidad','precio','precio_unitario','created_by','order'];
@@ -307,7 +308,7 @@ class InitController extends Controller
 	private function batchInsert($model,$fields,$data){
 		$ret=[];
 		foreach($data as $d){
-			$m=new $model;$setA=[];	
+			$m=new $model;$setA=[];
 			foreach($fields as $k=>$f){
 				$setA[$f]=$d[$k];
 			}
@@ -321,6 +322,6 @@ class InitController extends Controller
 			}
 			$ret[]=$m->id;
 		}
-		return $ret; 
+		return $ret;
 	}
 }
