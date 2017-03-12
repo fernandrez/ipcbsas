@@ -61,6 +61,9 @@ class ImportForm extends Model
           $registro->fecha=$this->fecha;
           $registro->cantidad=1;
           $registro->unidad='kg';
+          if(strpos($registro->elemento,'unidad')!==false){
+            $registro->unidad='un';
+          }
           $registro->precio=$rowData[0][2];
           $registro->save();
         }
