@@ -21,7 +21,7 @@ use app\models\Orderbook;
  */
 class OrderbookController extends Controller
 {
-    private static $ticks = ['ETH/BTC','BTC/USD',];
+    private static $ticks = ['ETH/BTC','ETH/USD','BTC/USD',];
     /**
      * This command echoes what you have entered as the message.
      * @param string $message the message to be echoed.
@@ -30,7 +30,7 @@ class OrderbookController extends Controller
     {
         foreach(self::$ticks as $tick){
             $curl = new curl\Curl();
-            
+
             //get http://example.com/
             $response = json_decode($curl->get('https://cex.io/api/order_book/'.$tick.'/?depth=10'),true);
             $orderbook = new Orderbook;

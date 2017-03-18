@@ -22,7 +22,7 @@ use yii\db\Query;
  */
 class TradeHistoryController extends Controller
 {
-    private static $ticks = ['ETH/BTC','BTC/USD',];
+    private static $ticks = ['ETH/BTC','ETH/USD','BTC/USD',];
     /**
      * This command echoes what you have entered as the message.
      * @param string $message the message to be echoed.
