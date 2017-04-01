@@ -63,8 +63,8 @@ class ImportForm extends Model
     $this->precio <= $highestCol)
       for($row=1;$row<=$highestRow;$row++){
         $rowData=$sheet->rangeToArray('A'.$row.':'.$highestCol.$row,NULL,TRUE,FALSE);
-        $categoria=$rowData[0][$this->elemento];
-        $elemento=$rowData[0][$this->categoria];
+        $categoria=$rowData[0][$this->categoria];
+        $elemento=$rowData[0][$this->elemento];
         $unidad=strtolower($rowData[0][$this->unidad]);
         $unidad=($unidad=='unidad')?'u':$unidad;
         $precio=$rowData[0][$this->precio];
