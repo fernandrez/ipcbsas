@@ -45,7 +45,7 @@ class ImportController extends \app\controllers\BasicController
             if ($model->validate()) {
               $inputFile='uploads/' . $model->file->baseName . '.' . date('Y-m-dTH:i:s') . '.' . $model->file->extension;
                 $model->file->saveAs($inputFile);
-                $model->importPrados($inputFile);
+                $model->importGeneric($inputFile);
             }
         }
         $cadenas = ArrayHelper::map(Cadena::find()->where(['status'=>'active'])->orderBy('titulo')->all(), 'id', 'titulo');

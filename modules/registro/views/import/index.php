@@ -37,6 +37,20 @@ $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); 
     </div>
   </div>
 </div>
+<div class="row">
+  <div class="col-sm-3">
+      <?= $form->field($model, 'elemento')->textInput() ?>
+  </div>
+  <div class="col-sm-3">
+      <?= $form->field($model, 'categoria')->textInput() ?>
+  </div>
+  <div class="col-sm-3">
+      <?= $form->field($model, 'unidad')->textInput() ?>
+  </div>
+  <div class="col-sm-3">
+      <?= $form->field($model, 'precio')->textInput() ?>
+  </div>
+</div>
 <?= $form->field($model, 'file')->fileInput() ?>
 
 <button>Submit</button>
