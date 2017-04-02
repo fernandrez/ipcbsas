@@ -11,7 +11,7 @@ class ImportForm extends Model
   /**
    * @var UploadedFile|Null file attribute
    */
-  public $file, $cadena_id, $almacen_id, $fecha, $elemento, $categoria, $unidad, $precio;
+  public $file, $cadena_id, $almacen_id, $fecha, $elemento, $categoria, $unidad, $precio, $cantidad, $marca, $descripcion, $start_row;
 
   /**
    * @return array the validation rules.
@@ -27,10 +27,14 @@ class ImportForm extends Model
   }
 
   public function init(){
+      $this->start_row = 0;
       $this->elemento = 0;
       $this->categoria = 1;
       $this->unidad = 2;
       $this->precio = 3;
+      $this->cantidad = 4;
+      $this->marca = 5;
+      $this->descripcion = 6;
   }
 
   public function importGeneric($inputFile){
@@ -39,6 +43,7 @@ class ImportForm extends Model
     if(strtolower($cadena->titulo)=='los prados' && strtolower($almacen->identificador)=='frigorifico central'){
       return $this->importPradosFrigorificoCentral($inputFile);
     } elseif(strtolower($cadena->titulo)=='hugo' && strtolower($almacen->identificador)=='central'){
+      $this->start_row = 1;
       return $this->importUsual($inputFile);
     } else {
       return $this->importUsual($inputFile);
@@ -61,13 +66,16 @@ class ImportForm extends Model
     $this->categoria <= $highestCol &&
     $this->unidad <= $highestCol &&
     $this->precio <= $highestCol)
-      for($row=1;$row<=$highestRow;$row++){
+      for($row=$this->start_row;$row<=$highestRow;$row++){
         $rowData=$sheet->rangeToArray('A'.$row.':'.$highestCol.$row,NULL,TRUE,FALSE);
         $categoria=$rowData[0][$this->categoria];
         $elemento=$rowData[0][$this->elemento];
         $unidad=strtolower($rowData[0][$this->unidad]);
         $unidad=($unidad=='unidad')?'u':$unidad;
         $precio=$rowData[0][$this->precio];
+        $marca=$this->marca<=$highestColNumber?$rowData[0][$this->marca]:'';
+        $descripcion=$this->descripcion<=$highestColNumber?$rowData[0][$this->descripcion]:'';
+        $cantidad=$this->cantidad<=$highestColNumber?$rowData[0][$this->cantidad]:1;
         //Preexistence
         $catdb=Categoria::find()->where(['titulo'=>$categoria])->one();
         if(!$catdb){
@@ -82,9 +90,11 @@ class ImportForm extends Model
         $registro->categoria_id=$catdb->id;
         $registro->elemento=$elemento;
         $registro->fecha=$this->fecha;
-        $registro->cantidad=1;
+        $registro->cantidad=$cantidad;
         $registro->unidad=$unidad;
         $registro->precio=$precio;
+        $registro->marca=$marca;
+        $registro->descripcion=$descripcion;
         $registro->save();
       }
   }
